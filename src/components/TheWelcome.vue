@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <h1>Bienvenue sur mon application Movies </h1>
 
