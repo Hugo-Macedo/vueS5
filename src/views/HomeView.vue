@@ -1,8 +1,14 @@
 <script>
 import TheWelcome from '../components/TheWelcome.vue'
 import axios from 'axios';
+import MovieCard from '../components/MovieCard.vue'
+
 
 export default {
+  components: {
+    TheWelcome,
+    MovieCard,    
+  },
   data() {
     return {
       movies: [],
@@ -22,7 +28,7 @@ export default {
         //   this.$router.push('/');
         //   return;
         // }
-        const response = await axios.get('http://localhost:80/api/movies', {
+        const response = await axios.get('http://localhost/api/movies?order[releaseDate]=desc', {
           headers: {
             // TODO DECOMENT WHEN LOGIN FORM IS AVAILABLE   
             // Authorization: `Bearer ${token}`,
@@ -53,13 +59,9 @@ export default {
     <TheWelcome />
   <div>
     <h1>Liste des 4 derniers films</h1>
-    <div v-for="(movie, index) in movies" :key="movie.id">
-      <span v-if="index > 25">
-        {{ movie.title }}
-        <br>
-        {{ movie.category.name }}
-        <br>
-        <br>
+    <div v-for="movie in movies.slice(0, 4)" :key="movie.id">
+      <span>
+        <MovieCard :movie="movie" :movie.id="key"/>
       </span>
     </div>
   </div>
