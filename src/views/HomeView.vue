@@ -40,10 +40,8 @@ export default {
           },
         });
         this.movies = response.data;
-        console.log (response.data);
       } catch (error) {
         console.error('Error', error);
-        console.log(error.response.data.code);
         if(error.response.data.code==401){
           //---- détruire le token
           localStorage.removeItem('token');
@@ -69,7 +67,6 @@ export default {
           },
         });
         this.actors = response.data;
-        console.log (response.data);
       } catch (error) {
         console.error('Error', error);
         console.log(error.response.data.code);
