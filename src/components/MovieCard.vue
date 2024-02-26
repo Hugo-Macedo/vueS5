@@ -1,6 +1,6 @@
 <script>
    export default {
-  props: ['movie', 'movie.id'],
+  props: ['movie'],
   methods: {
     formatReleaseDate(isoDateString) {
       //To have date like dd/mm/YYYY
@@ -13,10 +13,10 @@
 </script>
 <template>
    <div class="MovieCard">
-      <a :href="'/movies/'+movie.id">{{ movie.title }}</a>
-      <br>
-      {{ formatReleaseDate(movie.releaseDate) }}
-      <br>
-      {{ movie.category.name }}
+    <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
+    <br>
+    {{ formatReleaseDate(movie.releaseDate) }}
+    <br>
+    {{ movie.category.name }}
    </div>
 </template>
