@@ -1,5 +1,6 @@
 <script>
 import TheWelcome from '../components/TheWelcome.vue'
+import Nav from '../components/Nav.vue';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard.vue'
 
@@ -56,6 +57,7 @@ export default {
 
 <template>
   <main>
+    <Nav />
     <TheWelcome />
   <div>
     <h1>Liste des 4 derniers films</h1>

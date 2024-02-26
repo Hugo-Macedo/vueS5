@@ -6,9 +6,22 @@
         <RouterLink to="/actors">Actors</RouterLink>
         <RouterLink to="/categories">Catégories</RouterLink>
         <RouterLink to="/profil">Profil</RouterLink>
+        <input type="button" value="Déconnexion" @click="deconnectUser()">
         </nav>
     </header>
 </template>
+<script>
+import { useRouter } from 'vue-router';
+
+export default {
+    methods: {
+      deconnectUser() {
+        localStorage.removeItem('token')
+        location.reload()
+      },
+    }
+  };
+</script>
 
 <style scoped>
     header {
