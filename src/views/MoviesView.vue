@@ -1,6 +1,6 @@
 <script setup>
-import Movies from '../components/Movies.vue'
 import Nav from '../components/Nav.vue';
+import Movies from '../components/Movies.vue'
 </script>
 
 <template>

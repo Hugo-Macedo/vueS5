@@ -1,3 +1,25 @@
+<template>
+  <main>
+    <Nav />
+    <div>
+      <h1>Liste des 4 derniers films</h1>
+      <div v-for="movie in movies.slice(0, 4)" :key="movie.id">
+        <span>
+          <MovieCard :movie="movie"/>
+        </span>
+      </div>
+    </div>
+    <div>
+      <h1>Liste des 4 derniers acteurs</h1>
+      <div v-for="actor in actors.slice(0, 4)">
+        <span>
+          <ActorCard :actor="actor"/>
+        </span>
+      </div>
+    </div>
+  </main>
+</template>
+
 <script>
 import Nav from '../components/Nav.vue';
 import axios from 'axios';
@@ -80,25 +102,3 @@ export default {
   }
 };
 </script>
-
-<template>
-  <main>
-    <Nav />
-  <div>
-    <h1>Liste des 4 derniers films</h1>
-    <div v-for="movie in movies.slice(0, 4)" :key="movie.id">
-      <span>
-        <MovieCard :movie="movie"/>
-      </span>
-    </div>
-  </div>
-  <div>
-    <h1>Liste des 4 derniers acteurs</h1>
-    <div v-for="actor in actors.slice(0, 4)">
-      <span>
-        <ActorCard :actor="actor"/>
-      </span>
-    </div>
-  </div>
-  </main>
-</template>
