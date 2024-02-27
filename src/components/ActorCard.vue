@@ -5,8 +5,7 @@ export default {
 </script>
 <template>
    <div class="ActorCard">
-      {{ actor.firstName }} {{ actor.lastName }}
-      <br>  
-      {{ actor.nationality.name }}
+      <router-link :to="{ name: 'actordetails', params: { id: actor.id } }">{{ actor.firstName }} {{ actor.lastName }}</router-link>
+      <p v-if="actor.nationality">{{ actor.nationality.name }}</p>
    </div>
 </template>

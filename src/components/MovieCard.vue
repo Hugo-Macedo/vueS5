@@ -14,9 +14,8 @@
 <template>
    <div class="MovieCard">
     <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
-    <br>
-    {{ formatReleaseDate(movie.releaseDate) }}
-    <br>
-    {{ movie.category.name }}
+    <p v-if="movie.releaseDate">{{ formatReleaseDate(movie.releaseDate) }}</p>
+    <p v-if="movie.category">{{ movie.category.name }}</p>
+    
    </div>
 </template>
