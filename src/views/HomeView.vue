@@ -1,5 +1,4 @@
 <script>
-import TheWelcome from '../components/TheWelcome.vue'
 import Nav from '../components/Nav.vue';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard.vue';
@@ -9,7 +8,6 @@ import ActorCard from '../components/ActorCard.vue';
 export default {
   components: {
     Nav,
-    TheWelcome,
     MovieCard,
     ActorCard,    
   },
@@ -86,7 +84,6 @@ export default {
 <template>
   <main>
     <Nav />
-    <TheWelcome />
   <div>
     <h1>Liste des 4 derniers films</h1>
     <div v-for="movie in movies.slice(0, 4)" :key="movie.id">
