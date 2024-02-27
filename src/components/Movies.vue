@@ -19,14 +19,14 @@
               <a @click="removeMovie(movie.id)">Remove</a>
             </div>
             <div v-if="!searchMovieTitle" class="pagination">
-              <button v-if="firstPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(firstPageForGetMoviesRequest)">Première page</button>
-              <button v-else disabled>Première page</button>
-              <button v-if="previousPageForGetMoviesRequest" @click="updatePaginationOfMovies(previousPageForGetMoviesRequest)">Page précédente</button>
-              <button v-else disabled>Page précédente</button>
-              <button v-if="nextPageForGetMoviesRequest" @click="updatePaginationOfMovies(nextPageForGetMoviesRequest)">Page suivante</button>
-              <button v-else disabled>Page suivante</button>
-              <button v-if="lastPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(lastPageForGetMoviesRequest)">Dernière page</button>
-              <button v-else disabled>Dernière page</button>
+              <button v-if="firstPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(firstPageForGetMoviesRequest)">&lt;&lt;First</button>
+              <button v-else disabled>&lt;&lt;First</button>
+              <button v-if="previousPageForGetMoviesRequest" @click="updatePaginationOfMovies(previousPageForGetMoviesRequest)">&lt;Previous</button>
+              <button v-else disabled>&lt;Previous</button>
+              <button v-if="nextPageForGetMoviesRequest" @click="updatePaginationOfMovies(nextPageForGetMoviesRequest)">Next></button>
+              <button v-else disabled>Next></button>
+              <button v-if="lastPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(lastPageForGetMoviesRequest)">Last>></button>
+              <button v-else disabled>Last>></button>
             </div>
             <div v-if="searchMovieTitle.length">
               <div v-for="movie in searchResults" :key="movie.id">
@@ -37,22 +37,6 @@
           </div>
           </div>
         </div>
-        <div :class="['col-md-3', { 'd-none': !selectedMovieId }]">
-          <h2 v-if="selectedMovie">{{ selectedMovie.title }}</h2>
-          <form v-if="selectedMovie" @submit.prevent="updateMovieTitle">
-            <div class="form-group">
-              <label for="editMovieTitle">Titre du film :</label>
-              <input
-                  type="text"
-                  class="form-control"
-                  id="editMovieTitle"
-                  v-model="editedMovieTitle"
-              />
-            </div>
-            <button v-if="selectedMovie" type="submit" class="btn btn-primary">Modifier</button>
-          </form>
-        </div>
-
       </div>
     </div>
   </div>
@@ -82,11 +66,50 @@ export default {
     this.getMovies();
   },
   methods: {
-    toggleDetails(movieId) {
+    async toggleDetails(movieId) {
       // Permuter l'état du film sélectionné
       this.selectedMovieId = this.selectedMovieId === movieId ? null : movieId;
       this.selectedMovie = this.movies.find(movie => movie.id === this.selectedMovieId);
       this.editedMovieTitle = this.selectedMovie ? this.selectedMovie.title : '';
+
+      const inputValue = this.editedMovieTitle;
+      const { value } = await Swal.fire({
+        title: "Modifier le titre du film " + this.selectedMovie.title,
+        input: "text",
+        inputValue,
+        showCancelButton: true,
+        reverseButtons: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return "Vous devez écrire un titre";
+          }
+        }
+      });
+
+      if (value) {
+      // Si l'utilisateur a saisi un nouveau titre et a cliqué sur "OK"
+      // Mettre à jour le titre du film avec la nouvelle valeur
+      this.editedMovieTitle = value;
+      // Appeler la méthode pour mettre à jour le titre du film dans la base de données, par exemple
+      this.updateMovieTitle();
+      } else {
+        // Si l'utilisateur a annulé ou n'a pas saisi de nouveau titre
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Titre du film non modifié"
+        });
+      }
     },
     async getMovies() {
       try {
@@ -190,6 +213,22 @@ export default {
 
           // Rafraîchir la liste des films
           this.getMovies();
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Titre du film modifié avec succès"
+          });
 
           // Réinitialiser la sélection du film après modification
           this.selectedMovieId = null;
