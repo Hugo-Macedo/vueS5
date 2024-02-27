@@ -3,8 +3,6 @@
     <li>Ajout d'un bouton "Add movie"</li>
     <li>La page contient un formulaire permettant d'ajouter un film</li>
     <li>Ajouter la possibilité de sélectionner un ou plusieurs acteurs liés au film</li>
-    <li>Chaque "Movie" peut être supprimée</li>
-    <li>Ajouter un popin de validation de suppression</li>
   </ul>
   <div>
     <h1>Liste des films</h1>
@@ -18,6 +16,7 @@
             <div v-if="!searchMovieTitle" class="col-md-6 border" v-for="movie in movies" :key="movie.id" >
               <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
               <a @click="toggleDetails(movie.id)">Edit</a>
+              <a @click="removeMovie(movie.id)">Remove</a>
             </div>
             <div v-if="!searchMovieTitle" class="pagination">
               <button v-if="firstPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(firstPageForGetMoviesRequest)">Première page</button>
@@ -33,6 +32,7 @@
               <div v-for="movie in searchResults" :key="movie.id">
                 <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
                 <a @click="toggleDetails(movie.id)">Edit</a>
+                <a @click="removeMovie(movie.id)">Remove</a>
               </div>
           </div>
           </div>
@@ -60,6 +60,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2'
 
 export default {
   data() {
@@ -196,6 +197,72 @@ export default {
           console.error('Erreur lors de la mise à jour du titre du film :', error);
         }
       }
+    },
+    removeMovie(movieId) {
+      Swal.fire({
+        title: 'Suppression',
+        text: 'Êtes vous sûr de vouloir supprimer le film ?',
+        icon: 'warning',
+        confirmButtonText: 'Supprimer',
+        showDenyButton: true,
+        denyButtonText: 'Annuler',
+        reverseButtons: true,
+      }).then(async (result) => {
+        // Vérifie si l'utilisateur a cliqué sur le bouton de confirmation
+        if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem('token'); // Récupérer le token d'authentification
+          if (!token) {
+            //--- rediriger l'utilisateur vers la page de connexion
+            this.$router.push('/login');
+            return;
+          }
+          const headers = {
+            Authorization: `Bearer ${token}`,
+          };
+
+          await axios.delete(`${import.meta.env.VITE_API_URL}/movies/${movieId}`,{ headers });
+
+          // Rafraîchir la liste des films
+          this.getMovies();
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Film supprimé avec succès"
+          });
+
+        } catch (error) {
+          console.error('Erreur lors de la mise à jour du titre du film :', error);
+        }
+        } else if (result.isDenied) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Film non supprimé"
+          });
+        }
+      });
     },
 
     updatePaginationOfMovies(newPage) {
