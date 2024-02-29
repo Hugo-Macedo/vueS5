@@ -9,12 +9,12 @@
 </template>
   
 <script>
-    import axios from 'axios';
-    import MovieCard from '../components/MovieCard.vue';
+import axios from 'axios'
+import MovieCard from '../components/MovieCard.vue'
 
     export default {
         components: {
-            MovieCard,    
+            MovieCard
         },
         created() {
             // Recover the id of the movie

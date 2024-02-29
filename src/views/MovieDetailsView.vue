@@ -2,13 +2,14 @@
     <div class="movie-details">
         <button @click="goBack" class="back-button">Retour</button>
         <h2>{{ movie.title}}</h2>
-        <p><strong>Date de sortie:</strong> {{ formatReleaseDate(movie.releaseDate) }}</p>
+        <p v-if="movie.releaseDate"><strong>Date de sortie:</strong> {{ formatReleaseDate(movie.releaseDate) }}</p>
         <p v-if="movie.category"><strong>Catégorie:</strong> {{ movie.category.name }}</p>
-        <p><strong>Durée:</strong> {{ movie.duration }}</p>
-        <p><strong>Nombre d'entrée :</strong> {{ movie.entries }}</p>
-        <p><strong>Résumé :</strong> {{ movie.description }}</p>
-        <p><strong>Acteurs:</strong></p>
-        <p v-for="actor in movie.actors"><ActorCard :actor="actor" /></p>
+        <p v-if="movie.duration"><strong>Durée:</strong> {{ movie.duration }}</p>
+        <p v-if="movie.entries"><strong>Nombre d'entrée :</strong> {{ movie.entries }}</p>
+        <p v-if="movie.description"><strong>Résumé :</strong> {{ movie.description }}</p>
+        <p v-if="movie.note"><strong>Note :</strong> {{ movie.note }}</p>
+        <p v-if="movie.actors"><strong>Acteurs:</strong></p>
+        <p v-if="movie.actors" v-for="actor in movie.actors"><ActorCard :actor="actor" /></p>
     </div>
 </template>
   

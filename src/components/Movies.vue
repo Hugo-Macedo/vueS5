@@ -1,14 +1,12 @@
 <template>
-  <ul>
-    <li>Ajout d'un bouton "Add movie"</li>
-    <li>La page contient un formulaire permettant d'ajouter un film</li>
-    <li>Ajouter la possibilité de sélectionner un ou plusieurs acteurs liés au film</li>
-  </ul>
   <div>
     <h1>Liste des films</h1>
     <div>
       <input type="text" @input="searchMovie" v-model="searchMovieTitle" placeholder="Rechercher un film">
     </div>
+    <router-link :to="{name: 'addmovie'}">
+      <button>+ Ajouter un film</button>
+    </router-link>
     <div class="container">
       <div class="row">
         <div class="col-md-9">
@@ -45,6 +43,7 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { RouterLink } from 'vue-router'
 
 export default {
   data() {
@@ -263,7 +262,7 @@ export default {
           await axios.delete(`${import.meta.env.VITE_API_URL}/movies/${movieId}`,{ headers });
 
           // Rafraîchir la liste des films
-          this.getMovies();
+          await this.getMovies();
 
           const Toast = Swal.mixin({
             toast: true,
