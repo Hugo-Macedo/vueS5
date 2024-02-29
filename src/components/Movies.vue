@@ -54,7 +54,7 @@ export default {
       editedMovieTitle:'',
       searchMovieTitle: '',
       searchResults: [],
-      pageForGetMoviesRequest : '/movies?online=true&page=1',
+      pageForGetMoviesRequest : '/movies?page=1',
       previousPageForGetMoviesRequest :'',
       nextPageForGetMoviesRequest : '',
       firstPageForGetMoviesRequest :'',
@@ -161,7 +161,7 @@ export default {
       if(this.searchMovieTitle.length) {
         try {
           // reset la pagination par defaut
-          this.pageForGetMoviesRequest = "/movies?online=true&page=1"
+          this.pageForGetMoviesRequest = "/movies&page=1"
 
           const token = localStorage.getItem('token'); // Récupérer le token d'authentification
           if (!token) {
@@ -174,7 +174,7 @@ export default {
             'Content-Type': 'application/merge-patch+json',
           };
 
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/movies?online=true&title=${this.searchMovieTitle}`, { headers });
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/movies?title=${this.searchMovieTitle}`, { headers });
 
           this.searchResults = response.data['hydra:member']
           // Réinitialiser editedMovieTitle après la mise à jour

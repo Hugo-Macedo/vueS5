@@ -53,7 +53,7 @@ export default {
           this.$router.push('/login');
           return;
         }
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/movies?online=true&order[releaseDate]=desc`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/movies?order[releaseDate]=desc`, {
           headers: {  
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',

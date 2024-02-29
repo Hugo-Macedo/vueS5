@@ -8,6 +8,7 @@
         <p v-if="movie.entries"><strong>Nombre d'entrée :</strong> {{ movie.entries }}</p>
         <p v-if="movie.description"><strong>Résumé :</strong> {{ movie.description }}</p>
         <p v-if="movie.note"><strong>Note :</strong> {{ movie.note }}</p>
+        <p v-if="movie.online"><strong>En ligne :</strong> {{ movie.online }}</p>
         <p v-if="movie.actors"><strong>Acteurs:</strong></p>
         <p v-if="movie.actors" v-for="actor in movie.actors"><ActorCard :actor="actor" /></p>
     </div>
@@ -46,7 +47,7 @@
                     this.$router.push('/login');
                     return;
                     }
-                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/movies?online=true&id=${movieId}`, {
+                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/movies?id=${movieId}`, {
                     headers: {  
                         Authorization: `Bearer ${token}`,
                         Accept: 'application/json',
