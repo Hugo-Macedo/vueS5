@@ -44,7 +44,6 @@ import MovieCard from '../components/MovieCard.vue'
                     this.actor = response.data[0];
                     } catch (error) {
                         console.error('Error', error);
-                        console.log(error.response.data.code);
                         if(error.response.data.code==401){
                             //---- détruire le token
                             localStorage.removeItem('token');

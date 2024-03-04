@@ -76,7 +76,7 @@ export default {
 
         } catch (error) {
             console.error('Error', error);
-            console.log(error.response.data.code);
+            (error.response.data.code);
 
             if(error.response.data.code==401){
 
@@ -106,7 +106,7 @@ export default {
 
         } catch (error) {
             console.error('Error', error);
-            console.log(error.response.data.code);
+            (error.response.data.code);
 
             if(error.response.data.code==401){
 
@@ -186,7 +186,6 @@ export default {
           
         } catch (error) {
             console.error('Error', error);
-            console.log(error.response.data.code);
             const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
