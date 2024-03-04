@@ -1,29 +1,45 @@
-# vueS5
+### Prérequis
 
-This template should help get you started developing with Vue 3 in Vite.
+- [Node.js](https://nodejs.org/en/)
+- [Npm](https://www.npmjs.com/get-npm)
+- Projet Backend [WR506](https://github.com/Hugo-Macedo/symfonyS5)
 
-## Recommended IDE Setup
+### Installation
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
+1. Cloner le projet
+2. Installer les dépendances
+    ```bash
+    npm install
+    ```
+3. Créer le fichier .env.local et renseigner les variables d'environnement
+    ```bash
+    cp .env .env.local
+    ```
+4. Renseigner les variables suivantes :
+    ```dotenv
+    VITE_SERVER_API_URL #(url de l'api)
+    ```
+5. Lancer le serveur
+- Development
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+Identifiants par défaut pour se connecter a l'application :
+```
+Admin:
+    email: admin@gmail.com
+    password: admin
+Users:
+    email: baptiste@gmail.com
+    password: user0
 
-```sh
-npm run build
+    email: erwan@gmail.com
+    password: user1
+
+    email: paul@gmail.com
+    password: user2
+
+    email: oscar@gmail.com
+    password: user3
 ```
