@@ -8,7 +8,6 @@
         <input type="password" id="password" v-model="password" required>
         <button type="submit">Se connecter</button>
       </form>
-      <a href="#" @click="forgotPassword">Mot de passe oublié ?</a>
     </div>
   </template>
   
@@ -47,11 +46,6 @@ export default {
             alert('identifiants incorrects')
         }
       },
-      forgotPassword() {
-        // Envoyer une demande de mot de passe oublié
-        // Vous pouvez implémenter cette fonctionnalité en utilisant Axios pour envoyer une requête au serveur
-        console.log("Envoyer une demande de mot de passe oublié");
-      }
     }
   };
   </script>
