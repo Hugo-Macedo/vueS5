@@ -201,3 +201,46 @@ export default {
     }
 }
 </script>
+<style scoped>
+    main {
+  margin: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input[type="password"] {
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+form {
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+</style>

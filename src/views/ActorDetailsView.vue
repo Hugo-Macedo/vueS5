@@ -58,4 +58,44 @@ import MovieCard from '../components/MovieCard.vue'
         },
     }
 </script>
+<style scoped>
+    .actor-details {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.movie-card {
+  margin-bottom: 5px;
+}
+
+</style>
   

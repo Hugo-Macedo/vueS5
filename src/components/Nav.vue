@@ -1,13 +1,13 @@
 <template>
-  <header>
-      <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/movies">Movies</RouterLink>
-      <RouterLink to="/actors">Actors</RouterLink>
-      <RouterLink to="/categories">Catégories</RouterLink>
-      <RouterLink to="/profil">Profil</RouterLink>
-      <input type="button" value="Déconnexion" @click="deconnectUser()">
-      </nav>
+  <header id="mainHeader">
+    <nav class="mainNav">
+      <router-link to="/" class="navLink">Home</router-link>
+      <router-link to="/movies" class="navLink">Movies</router-link>
+      <router-link to="/actors" class="navLink">Actors</router-link>
+      <router-link to="/categories" class="navLink">Catégories</router-link>
+      <router-link to="/profil" class="navLink">Profil</router-link>
+      <input type="button" value="Déconnexion" @click="deconnectUser()" id="logoutButton">
+    </nav>
   </header>
 </template>
 <script>
@@ -22,50 +22,27 @@
 </script>
 
 <style scoped>
-    header {
-  line-height: 1.5;
-  max-height: 100vh;
+  #mainHeader {
+  padding: 10px;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.mainNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.navLink {
+  color: black;
+  text-decoration: none;
+  margin-right: 20px;
 }
 
-nav a.router-link-exact-active:hover {
+#logoutButton {
   background-color: transparent;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>

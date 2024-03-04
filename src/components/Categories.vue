@@ -1,43 +1,43 @@
 <template>
-  <div>
+  <div id="categoryList">
     <h1>Liste des Catégories</h1>
-    <div>
-      <input type="text" @input="searchCategory" v-model="searchCategoryName" placeholder="Rechercher une catégorie">
+    <div class="search-bar">
+      <input type="text" @input="searchCategory" v-model="searchCategoryName" placeholder="Rechercher une catégorie" id="searchInput">
     </div>
     <router-link :to="{name: 'addcategory'}">
-      <button>+ Ajouter une catégorie</button>
+      <button id="addCategoryButton">+ Ajouter une catégorie</button>
     </router-link>
     <div class="container">
       <div class="row">
         <div class="col-md-9">
           <div class="row">
-            <div v-if="!searchCategoryName" class="col-md-6 border" v-for=" category in categories" :key="category.id" >
-              <p>{{ category.name }}</p>
-              <a @click="category.editing = !category.editing">Edit</a>
-              <a @click="removeCategory(category)">Remove</a>
-              <form v-if="category.editing" @submit.prevent="updateCategory(category)">
-                <label>Nom de la catégorie :</label>
-                <input type="text" v-model="category.name" required>
-                <button type="submit">Modifier la catégorie</button>
-            </form>
+            <div v-if="!searchCategoryName" class="col-md-6 border category-card" v-for="category in categories" :key="category.id" >
+              <p class="category-name">{{ category.name }}</p>
+              <a @click="category.editing = !category.editing" class="edit-link">Edit</a>
+              <a @click="removeCategory(category)" class="remove-link">Remove</a>
+              <form v-if="category.editing" @submit.prevent="updateCategory(category)" class="edit-form">
+                <label for="categoryName">Nom de la catégorie :</label>
+                <input type="text" v-model="category.name" required id="categoryName">
+                <button type="submit" id="updateCategoryButton">Modifier la catégorie</button>
+              </form>
             </div>
             <div v-if="!searchCategoryName" class="pagination">
-              <button v-if="firstPageForGetCategoriesRequest && firstPageForGetCategoriesRequest !== pageForGetCategoriesRequest" @click="updatePaginationOfCategories(firstPageForGetCategoriesRequest)">&lt;&lt;First</button>
+              <button v-if="firstPageForGetCategoriesRequest && firstPageForGetCategoriesRequest !== pageForGetCategoriesRequest" @click="updatePaginationOfCategories(firstPageForGetCategoriesRequest)" id="firstPageButton">&lt;&lt;First</button>
               <button v-else disabled>&lt;&lt;First</button>
-              <button v-if="previousPageForGetCategoriesRequest" @click="updatePaginationOfCategoriess(previousPageForGetCategoriesRequest)">&lt;Previous</button>
+              <button v-if="previousPageForGetCategoriesRequest" @click="updatePaginationOfCategories(previousPageForGetCategoriesRequest)" id="previousPageButton">&lt;Previous</button>
               <button v-else disabled>&lt;Previous</button>
-              <button v-if="nextPageForGetCategoriesRequest" @click="updatePaginationOfCategories(nextPageForGetCategoriesRequest)">Next></button>
+              <button v-if="nextPageForGetCategoriesRequest" @click="updatePaginationOfCategories(nextPageForGetCategoriesRequest)" id="nextPageButton">Next></button>
               <button v-else disabled>Next></button>
-              <button v-if="lastPageForGetCategoriesRequest && lastPageForGetCategoriesRequest !== pageForGetCategoriesRequest" @click="updatePaginationOfCategories(lastPageForGetCategoriesRequest)">Last>></button>
+              <button v-if="lastPageForGetCategoriesRequest && lastPageForGetCategoriesRequest !== pageForGetCategoriesRequest" @click="updatePaginationOfCategories(lastPageForGetCategoriesRequest)" id="lastPageButton">Last>></button>
               <button v-else disabled>Last>></button>
             </div>
-            <div v-if="searchCategoryName.length">
+            <div v-if="searchCategoryName.length" class="search-results">
               <div v-for="category in searchResults" :key="category.id">
-                <p>{{ category.name }}</p>
-                <a @click="category.editing = !category.editing">Edit</a>
-                <a @click="removeCategory(category)">Remove</a>
+                <p class="category-name">{{ category.name }}</p>
+                <a @click="category.editing = !category.editing" class="edit-link">Edit</a>
+                <a @click="removeCategory(category)" class="remove-link">Remove</a>
               </div>
-          </div>
+            </div>
           </div>
         </div>
       </div>
@@ -273,3 +273,62 @@ export default {
   },
 };
 </script>
+<style scoped>
+  #categoryList {
+  margin-top: 20px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  padding: 8px;
+  width: 300px;
+}
+
+#addCategoryButton {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.category-card {
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.category-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.edit-link,
+.remove-link {
+  color: #007bff;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.edit-form {
+  margin-top: 20px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+</style>

@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <h1>Liste des films</h1>
-    <div>
-      <input type="text" @input="searchMovie" v-model="searchMovieTitle" placeholder="Rechercher un film">
+  <div id="movieList">
+    <h1 id="movieListTitle">Liste des films</h1>
+    <div class="search-bar" id="searchBar">
+      <input type="text" @input="searchMovie" v-model="searchMovieTitle" placeholder="Rechercher un film" id="searchInput">
     </div>
     <router-link :to="{name: 'addmovie'}">
-      <button>+ Ajouter un film</button>
+      <button id="addMovieButton">+ Ajouter un film</button>
     </router-link>
-    <div class="container">
-      <div class="row">
+    <div class="container" id="movieContainer">
+      <div class="row" id="movieRow">
         <div class="col-md-9">
           <div class="row">
-            <div v-if="!searchMovieTitle" class="col-md-6 border" v-for="movie in movies" :key="movie.id" >
-              <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
-              <a @click="movie.editing = !movie.editing">Edit</a>
-              <a @click="removeMovie(movie.id)">Remove</a>
-              <form v-if="movie.editing" @submit.prevent="updateMovie(movie)">
+            <div v-if="!searchMovieTitle" class="col-md-6 border movie-card" v-for="movie in movies" :key="movie.id" >
+              <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }" class="movie-title" :id="'movieTitle_' + movie.id">{{ movie.title }}</router-link>
+              <a @click="movie.editing = !movie.editing" class="edit-link" :id="'editLink_' + movie.id">Edit</a>
+              <a @click="removeMovie(movie.id)" class="remove-link" :id="'removeLink_' + movie.id">Remove</a>
+              <form v-if="movie.editing" @submit.prevent="updateMovie(movie)" class="edit-form" :id="'editForm_' + movie.id">
                 <label>Titre :</label>
                 <input type="text" v-model="movie.title" required>
                 <label>Catégorie :</label>
@@ -41,7 +41,7 @@
                 <button type="submit">Mettre à jour le film</button>
               </form>
             </div>
-            <div v-if="!searchMovieTitle" class="pagination">
+            <div v-if="!searchMovieTitle" class="pagination" id="pagination">
               <button v-if="firstPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(firstPageForGetMoviesRequest)">&lt;&lt;First</button>
               <button v-else disabled>&lt;&lt;First</button>
               <button v-if="previousPageForGetMoviesRequest" @click="updatePaginationOfMovies(previousPageForGetMoviesRequest)">&lt;Previous</button>
@@ -51,13 +51,13 @@
               <button v-if="lastPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(lastPageForGetMoviesRequest)">Last>></button>
               <button v-else disabled>Last>></button>
             </div>
-            <div v-if="searchMovieTitle.length">
+            <div v-if="searchMovieTitle.length" class="search-results" id="searchResults">
               <div v-for="movie in searchResults" :key="movie.id">
-                <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
-                <a @click="movie.editing = !movie.editing">Edit</a>
-                <a @click="removeMovie(movie.id)">Remove</a>
+                <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }" class="search-title" :id="'searchTitle_' + movie.id">{{ movie.title }}</router-link>
+                <a @click="movie.editing = !movie.editing" class="edit-link" :id="'editLink_' + movie.id">Edit</a>
+                <a @click="removeMovie(movie.id)" class="remove-link" :id="'removeLink_' + movie.id">Remove</a>
               </div>
-          </div>
+            </div>
           </div>
         </div>
       </div>
@@ -367,3 +367,70 @@ export default {
   
 };
 </script>
+<style scoped>
+  #movieList {
+  margin-top: 20px;
+}
+
+#movieListTitle {
+  margin-bottom: 20px;
+}
+
+#searchBar {
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  padding: 8px;
+  width: 300px;
+}
+
+#addMovieButton {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.movie-card {
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.movie-title {
+  color: #333333;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.edit-link,
+.remove-link {
+  color: #007bff;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.edit-form {
+  margin-top: 20px;
+}
+
+#pagination {
+  margin-top: 20px;
+}
+
+#searchResults {
+  margin-top: 20px;
+}
+
+
+</style>

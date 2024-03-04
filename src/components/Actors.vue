@@ -1,56 +1,57 @@
 
 <template>
-  <div>
+  <div id="actorList">
     <h1>Liste des Acteurs</h1>
-    <div>
-      <input type="text" @input="searchActor" v-model="searchActorLastName" placeholder="Rechercher par nom">
+    <div class="search-bar">
+      <input type="text" @input="searchActor" v-model="searchActorLastName" placeholder="Rechercher par nom de famille" id="searchInput">
     </div>
     <router-link :to="{name: 'addactor'}">
-      <button>+ Ajouter un acteur</button>
+      <button id="addActorButton">+ Ajouter un acteur</button>
     </router-link>
     <div class="container">
       <div class="row">
         <div class="col-md-9">
           <div class="row">
-            <div v-if="!searchActorLastName" class="col-md-6 border" v-for=" actor in actors" :key="actor.id" >
-              <router-link :to="{ name: 'actordetails', params: { id: actor.id } }">{{ actor.firstName }} {{ actor.lastName }}</router-link>
-              <a @click="actor.editing = !actor.editing">Edit</a>
-              <a @click="removeActor(actor.id)">Remove</a>
-              <form v-if="actor.editing" @submit.prevent="updateActor(actor)">
-                <label>Prénom :</label>
-                <input type="text" v-model="actor.firstName" required>
-                <label>Nom :</label>
-                <input type="text" v-model="actor.lastName" required>
-                <label>Nationalité :</label>
-                <select v-model="actor.nationality.name" required>
+            <div v-if="!searchActorLastName" class="col-md-6 border actor-card" v-for="actor in actors" :key="actor.id" >
+              <router-link :to="{ name: 'actordetails', params: { id: actor.id } }" class="actor-name">{{ actor.firstName }} {{ actor.lastName }}</router-link>
+              <a @click="actor.editing = !actor.editing" class="edit-link">Edit</a>
+              <a @click="removeActor(actor.id)" class="remove-link">Remove</a>
+              <form v-if="actor.editing" @submit.prevent="updateActor(actor)" class="edit-form">
+                <label for="firstName">Prénom :</label>
+                <input type="text" v-model="actor.firstName" required id="firstName">
+                <label for="lastName">Nom :</label>
+                <input type="text" v-model="actor.lastName" required id="lastName">
+                <label for="nationality">Nationalité :</label>
+                <select v-model="actor.nationality.name" required id="nationality">
                   <option v-for="nationality in nationalities" :value="nationality.id">{{ nationality.name}}</option>
-              </select>
-                <button type="submit">Modifier l'acteur</button>
-            </form>
+                </select>
+                <button type="submit" id="updateActorButton">Modifier l'acteur</button>
+              </form>
             </div>
             <div v-if="!searchActorLastName" class="pagination">
-              <button v-if="firstPageForGetActorsRequest !== pageForGetActorsRequest" @click="updatePaginationOfActors(firstPageForGetActorsRequest)">&lt;&lt;First</button>
+              <button v-if="firstPageForGetActorsRequest !== pageForGetActorsRequest" @click="updatePaginationOfActors(firstPageForGetActorsRequest)" id="firstPageButton">&lt;&lt;First</button>
               <button v-else disabled>&lt;&lt;First</button>
-              <button v-if="previousPageForGetActorsRequest" @click="updatePaginationOfActors(previousPageForGetActorsRequest)">&lt;Previous</button>
+              <button v-if="previousPageForGetActorsRequest" @click="updatePaginationOfActors(previousPageForGetActorsRequest)" id="previousPageButton">&lt;Previous</button>
               <button v-else disabled>&lt;Previous</button>
-              <button v-if="nextPageForGetActorsRequest" @click="updatePaginationOfActors(nextPageForGetActorsRequest)">Next></button>
+              <button v-if="nextPageForGetActorsRequest" @click="updatePaginationOfActors(nextPageForGetActorsRequest)" id="nextPageButton">Next></button>
               <button v-else disabled>Next></button>
-              <button v-if="lastPageForGetActorsRequest !== pageForGetActorsRequest" @click="updatePaginationOfActors(lastPageForGetActorsRequest)">Last>></button>
+              <button v-if="lastPageForGetActorsRequest !== pageForGetActorsRequest" @click="updatePaginationOfActors(lastPageForGetActorsRequest)" id="lastPageButton">Last>></button>
               <button v-else disabled>Last>></button>
             </div>
-            <div v-if="searchActorLastName.length">
+            <div v-if="searchActorLastName.length" class="search-results">
               <div v-for="actor in searchResults" :key="actor.id">
-                <router-link :to="{ name: 'actordetails', params: { id: actor.id } }">{{ actor.firstName }} {{ actor.lastName }}</router-link>
-                <a @click="actor.editing = !actor.editing">Edit</a>
-                <a @click="removeActor(actor.id)">Remove</a>
+                <router-link :to="{ name: 'actordetails', params: { id: actor.id } }" class="actor-name">{{ actor.firstName }} {{ actor.lastName }}</router-link>
+                <a @click="actor.editing = !actor.editing" class="edit-link">Edit</a>
+                <a @click="removeActor(actor.id)" class="remove-link">Remove</a>
               </div>
-          </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -305,3 +306,65 @@ export default {
   },
 };
 </script>
+<style scoped>
+  #actorList {
+  margin-top: 20px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  padding: 8px;
+  width: 300px;
+}
+
+#addActorButton {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actor-card {
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.actor-name {
+  color: #333333;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.edit-link,
+.remove-link {
+  color: #007bff;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.edit-form {
+  margin-top: 20px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+</style>
