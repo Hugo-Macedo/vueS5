@@ -13,8 +13,8 @@
             </select>
             <button type="submit">Ajouter l'acteur</button>
         </form>
-      </div>
-    </template>
+    </div>
+</template>
 <script>
     import axios from 'axios'
     import Swal from 'sweetalert2'

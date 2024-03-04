@@ -9,6 +9,7 @@ import MovieDetailsView from '../views/MovieDetailsView.vue'
 import ActorDetailsView from '../views/ActorDetailsView.vue'
 import AddMovieView from '../views/AddMovieView.vue'
 import AddActorView from '../views/AddActorView.vue'
+import AddCategoryView from '../views/AddCategoryView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,9 +65,14 @@ const router = createRouter({
       component: AddMovieView
     },
     {
-      path: '/actorss/add',
+      path: '/actors/add',
       name: 'addactor',
       component: AddActorView
+    },
+    {
+      path: '/category/add',
+      name: 'addcategory',
+      component: AddCategoryView
     }
   ]
 })

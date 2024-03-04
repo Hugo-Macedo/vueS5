@@ -3,7 +3,7 @@
   <div>
     <h1>Liste des Acteurs</h1>
     <div>
-      <input type="text" @input="searchActor" v-model="searchActorLastName" placeholder="Rechercher un acteur">
+      <input type="text" @input="searchActor" v-model="searchActorLastName" placeholder="Rechercher par nom">
     </div>
     <router-link :to="{name: 'addactor'}">
       <button>+ Ajouter un acteur</button>
@@ -61,7 +61,6 @@ export default {
   data() {
     return {
       actors: [],
-      selectedActorId: null,
       searchActorLastName: '',
       searchResults: [],
       pageForGetActorsRequest : '/actors?page=1',
@@ -150,7 +149,7 @@ export default {
           // relance l'\affichage des actors
           
         } catch (error) {
-          console.error('Erreur lors de la mise à jour du titre du film :', error);
+          console.error('Erreur lors de la mise à jour du titre de l\'acteur :', error);
         }
       } else {
         this.getActors()
@@ -197,7 +196,7 @@ export default {
         });
 
       } catch (error) {
-        console.error('Erreur lors de la mise à jour du titre du film :', error);
+        console.error("Erreur lors de la mise à jour de l\'acteur' :", error);
       }
     },
     removeActor(actorId) {
@@ -245,7 +244,7 @@ export default {
           });
 
         } catch (error) {
-          console.error('Erreur lors de la mise à jour du titre du film :'+ error);
+          console.error('Erreur lors de la mise à jour de l\'acteur :'+ error);
         }
         } else if (result.isDenied) {
           const Toast = Swal.mixin({
