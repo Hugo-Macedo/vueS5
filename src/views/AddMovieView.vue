@@ -19,7 +19,7 @@
         <input type="checkbox" v-model="online">
         <label>Note sur 10 :</label>
         <input type="number" min="0" max="10" v-model="note">
-        <label>Nomber d'entrées :</label>
+        <label>Nombres d'entrées :</label>
         <input type="number" min="0" max="50000000" v-model="entries"> <br />
         <label>Actors:</label>
         <select v-model="selectedActors" multiple required>
@@ -51,12 +51,12 @@ export default {
     }
   },
   mounted() {
-    this.getActorsNames()
-    this.getCategoriesNames()
+    this.getActors()
+    this.getCategories()
   },
   methods: {
 
-    async getActorsNames() {
+    async getActors() {
         try {
         const token = localStorage.getItem('token');
 
@@ -86,7 +86,7 @@ export default {
             }
       }
     },
-    async getCategoriesNames() {
+    async getCategories() {
         try {
         const token = localStorage.getItem('token');
 

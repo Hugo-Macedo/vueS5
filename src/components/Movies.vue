@@ -13,8 +13,33 @@
           <div class="row">
             <div v-if="!searchMovieTitle" class="col-md-6 border" v-for="movie in movies" :key="movie.id" >
               <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
-              <a @click="toggleDetails(movie.id)">Edit</a>
+              <a @click="movie.editing = !movie.editing">Edit</a>
               <a @click="removeMovie(movie.id)">Remove</a>
+              <form v-if="movie.editing" @submit.prevent="updateMovie(movie)">
+                <label>Titre :</label>
+                <input type="text" v-model="movie.title" required>
+                <label>Catégorie :</label>
+                <select v-model="selectedCategory" required>
+                    <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+                </select>
+                <label>Description :</label>
+                <input type="textarea" v-model="movie.description" required>
+                <label>Date de sortie :</label>
+                <input type="date" v-model="releaseDate">
+                <label>Durée (min):</label>
+                <input type="number" min="0" max="400" v-model="movie.duration">
+                <label>En ligne :</label>
+                <input type="checkbox" v-model="movie.online">
+                <label>Note sur 10 :</label>
+                <input type="number" min="0" max="10" v-model="movie.note">
+                <label>Nombres d'entrées :</label>
+                <input type="number" min="0" max="50000000" v-model="movie.entries"> <br />
+                <label>Acteurs:</label>
+                <select v-model="selectedActors" multiple required>
+                    <option v-for="actor in actors" :value="actor.id">{{ actor.firstName }} {{ actor.lastName }}</option>
+                </select>
+                <button type="submit">Mettre à jour le film</button>
+              </form>
             </div>
             <div v-if="!searchMovieTitle" class="pagination">
               <button v-if="firstPageForGetMoviesRequest !== pageForGetMoviesRequest" @click="updatePaginationOfMovies(firstPageForGetMoviesRequest)">&lt;&lt;First</button>
@@ -29,7 +54,7 @@
             <div v-if="searchMovieTitle.length">
               <div v-for="movie in searchResults" :key="movie.id">
                 <router-link :to="{ name: 'moviedetails', params: { id: movie.id } }">{{ movie.title }}</router-link>
-                <a @click="toggleDetails(movie.id)">Edit</a>
+                <a @click="movie.editing = !movie.editing">Edit</a>
                 <a @click="removeMovie(movie.id)">Remove</a>
               </div>
           </div>
@@ -49,9 +74,7 @@ export default {
   data() {
     return {
       movies: [],
-      selectedMovieId: null,
-      selectedMovie: null,
-      editedMovieTitle:'',
+      categories: [],
       searchMovieTitle: '',
       searchResults: [],
       pageForGetMoviesRequest : '/movies?page=1',
@@ -59,57 +82,18 @@ export default {
       nextPageForGetMoviesRequest : '',
       firstPageForGetMoviesRequest :'',
       lastPageForGetMoviesRequest :'',
+      selectedCategory: null,
+      actors: [], 
+      selectedActors: [],
+      releaseDate: ''
     };
   },
   created() {
-    this.getMovies();
+    this.getMovies()
+    this.getCategories()
+    this.getActors()
   },
   methods: {
-    async toggleDetails(movieId) {
-      // Permuter l'état du film sélectionné
-      this.selectedMovieId = this.selectedMovieId === movieId ? null : movieId;
-      this.selectedMovie = this.movies.find(movie => movie.id === this.selectedMovieId);
-      this.editedMovieTitle = this.selectedMovie ? this.selectedMovie.title : '';
-
-      const inputValue = this.editedMovieTitle;
-      const { value } = await Swal.fire({
-        title: "Modifier le titre du film " + this.selectedMovie.title,
-        input: "text",
-        inputValue,
-        showCancelButton: true,
-        reverseButtons: true,
-        inputValidator: (value) => {
-          if (!value) {
-            return "Vous devez écrire un titre";
-          }
-        }
-      });
-
-      if (value) {
-      // Si l'utilisateur a saisi un nouveau titre et a cliqué sur "OK"
-      // Mettre à jour le titre du film avec la nouvelle valeur
-      this.editedMovieTitle = value;
-      // Appeler la méthode pour mettre à jour le titre du film dans la base de données, par exemple
-      this.updateMovieTitle();
-      } else {
-        // Si l'utilisateur a annulé ou n'a pas saisi de nouveau titre
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          }
-        });
-        Toast.fire({
-          icon: "error",
-          title: "Titre du film non modifié"
-        });
-      }
-    },
     async getMovies() {
       try {
         const token = localStorage.getItem('token');
@@ -125,6 +109,9 @@ export default {
           },
         });
         this.movies = response.data['hydra:member'];
+        this.movies.forEach(movie => {
+          movie.editing = false; // Par défaut, le formulaire d'édition est masqué pour tous les films
+        });
 
         //met à jour les variables vues pour la pagination
         
@@ -156,6 +143,66 @@ export default {
         }
       }
     },
+    async getCategories() {
+        try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+
+            this.$router.push('/login');
+            return;
+        }
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/categories`, {
+            headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            },
+        })
+
+        this.categories = response.data
+
+        } catch (error) {
+            console.error('Error', error);
+            (error.response.data.code);
+
+            if(error.response.data.code==401){
+
+              localStorage.removeItem('token');
+              this.$router.push('/login');
+              return;
+            }
+        }
+    },
+    async getActors() {
+        try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+
+            this.$router.push('/login');
+            return;
+        }
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/actors`, {
+            headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            },
+        })
+
+        this.actors = response.data
+
+        } catch (error) {
+            console.error('Error', error);
+            (error.response.data.code);
+
+            if(error.response.data.code==401){
+
+            localStorage.removeItem('token');
+            this.$router.push('/login');
+            return;
+            }
+      }
+    },
     async searchMovie() {
       if(this.searchMovieTitle.length) {
         try {
@@ -178,10 +225,6 @@ export default {
           this.searchResults = response.data['hydra:member']
           // Réinitialiser editedMovieTitle après la mise à jour
           this.editedMovieTitle = '';
-          
-         
-          // Réinitialiser la sélection du film après modification
-          this.selectedMovieId = null;
         } catch (error) {
           console.error('Erreur lors de la mise à jour du titre du film :', error);
         }
@@ -190,8 +233,7 @@ export default {
          this.getMovies()
       }
     },
-    async updateMovieTitle() {
-      if (this.selectedMovie && this.editedMovieTitle) {
+    async updateMovie(movie) {
         try {
           const token = localStorage.getItem('token'); // Récupérer le token d'authentification
           if (!token) {
@@ -203,13 +245,30 @@ export default {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/merge-patch+json',
           };
-          const updatedMovie = { title: this.editedMovieTitle }; // Nouveau titre du film
+
+          let releaseDateForApiFormat = null
+          if (this.releaseDate) {
+              const date = new Date(this.releaseDate);
+              releaseDateForApiFormat =  date.toISOString();
+          }
+
+          const actorsUrls = this.selectedActors.map(id => `/api/actor/${id}`);
+
+          const updatedMovie = { 
+            "online": movie.online,
+            "category": `/api/categories/${this.selectedCategory}`,
+            "title": `${movie.title}`,
+            "description": `${movie.description}`,
+            "duration": Number(movie.duration),
+            "releaseDate": releaseDateForApiFormat,
+            "actors": actorsUrls,
+            "entries": movie.entries !==null ? movie.entries : null,
+            "note":  movie.note !== null ? movie.note : null 
+          }; // Nouveau titre du film
 
           // Envoyer la requête PATCH à l'API pour mettre à jour le titre du film
-          await axios.patch(`${import.meta.env.VITE_API_URL}/movies/${this.selectedMovie.id}`, updatedMovie, { headers });
+          await axios.patch(`${import.meta.env.VITE_API_URL}/movies/${movie.id}`, updatedMovie, { headers });
 
-          // Réinitialiser editedMovieTitle après la mise à jour
-          this.editedMovieTitle = '';
 
           // Rafraîchir la liste des films
           this.getMovies();
@@ -229,13 +288,9 @@ export default {
             icon: "success",
             title: "Titre du film modifié avec succès"
           });
-
-          // Réinitialiser la sélection du film après modification
-          this.selectedMovieId = null;
         } catch (error) {
           console.error('Erreur lors de la mise à jour du titre du film :', error);
         }
-      }
     },
     removeMovie(movieId) {
       Swal.fire({
@@ -310,5 +365,6 @@ export default {
       this.getMovies();
     },
   },
+  
 };
 </script>
