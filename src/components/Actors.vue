@@ -146,10 +146,10 @@ export default {
 
           this.searchResults = response.data['hydra:member']
           
-          // relance l'\affichage des actors
+          // relance l'\affichage des acteurs
           
         } catch (error) {
-          console.error('Erreur lors de la mise à jour du titre de l\'acteur :', error);
+          console.error('Erreur lors de la mise à jour du titre de l\'acteur:', error);
         }
       } else {
         this.getActors()
@@ -173,7 +173,7 @@ export default {
           "lastName": `${actor.lastName}`,
           "nationality": `api/nationalities/${actor.nationality.name}`
         };
-        // Envoyer la requête PATCH à l'API pour mettre à jour le titre du film
+        // Envoyer la requête PATCH à l'API pour mettre à jour l'acteur
         await axios.patch(`${import.meta.env.VITE_API_URL}/actors/${actor.id}`, updatedActor, { headers });
 
         // Rafraîchir la liste des acteurs
@@ -196,7 +196,7 @@ export default {
         });
 
       } catch (error) {
-        console.error("Erreur lors de la mise à jour de l\'acteur' :", error);
+        console.error('Erreur lors de la mise à jour du titre de l\'acteur :', error);
       }
     },
     removeActor(actorId) {
@@ -224,7 +224,7 @@ export default {
 
           await axios.delete(`${import.meta.env.VITE_API_URL}/actors/${actorId}`,{ headers });
 
-          // Rafraîchir la liste des films
+          // Rafraîchir la liste des acteurs
           await this.getActors();
 
           const Toast = Swal.mixin({

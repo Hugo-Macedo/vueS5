@@ -1,19 +1,17 @@
 <template>
-    <header>
-        <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/movies">Movies</RouterLink>
-        <RouterLink to="/actors">Actors</RouterLink>
-        <RouterLink to="/categories">Catégories</RouterLink>
-        <RouterLink to="/profil">Profil</RouterLink>
-        <input type="button" value="Déconnexion" @click="deconnectUser()">
-        </nav>
-    </header>
+  <header>
+      <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/movies">Movies</RouterLink>
+      <RouterLink to="/actors">Actors</RouterLink>
+      <RouterLink to="/categories">Catégories</RouterLink>
+      <RouterLink to="/profil">Profil</RouterLink>
+      <input type="button" value="Déconnexion" @click="deconnectUser()">
+      </nav>
+  </header>
 </template>
 <script>
-import { useRouter } from 'vue-router';
-
-export default {
+  export default {
     methods: {
       deconnectUser() {
         localStorage.removeItem('token')

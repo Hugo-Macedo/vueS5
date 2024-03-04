@@ -223,8 +223,7 @@ export default {
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/movies?title=${this.searchMovieTitle}`, { headers });
 
           this.searchResults = response.data['hydra:member']
-          // Réinitialiser editedMovieTitle après la mise à jour
-          this.editedMovieTitle = '';
+
         } catch (error) {
           console.error('Erreur lors de la mise à jour du titre du film :', error);
         }
@@ -266,7 +265,7 @@ export default {
             "note":  movie.note !== null ? movie.note : null 
           }; // Nouveau titre du film
 
-          // Envoyer la requête PATCH à l'API pour mettre à jour le titre du film
+          // Envoyer la requête PATCH à l'API pour mettre à jour le titre le film
           await axios.patch(`${import.meta.env.VITE_API_URL}/movies/${movie.id}`, updatedMovie, { headers });
 
 

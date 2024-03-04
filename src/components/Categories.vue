@@ -81,7 +81,7 @@ export default {
         });
         this.categories = response.data['hydra:member'];
         this.categories.forEach(category => {
-          category.editing = false; // Par défaut, le formulaire d'édition est masqué pour tous les catégories
+          category.editing = false; // Par défaut, le formulaire d'édition est masqué pour toutes les catégories
         });
 
         if(response.data['hydra:view']){
@@ -164,7 +164,7 @@ export default {
         const updatedCategory = {
           "name": `${category.name}`
         };
-        // Envoyer la requête PATCH à l'API pour mettre à jour le titre du film
+        // Envoyer la requête PATCH à l'API pour mettre à jour la catégorie
         await axios.patch(`${import.meta.env.VITE_API_URL}/categories/${category.id}`, updatedCategory, { headers });
 
         // Rafraîchir la liste des catégories
@@ -216,7 +216,7 @@ export default {
 
             await axios.delete(`${import.meta.env.VITE_API_URL}/categories/${category.id}`,{ headers });
 
-            // Rafraîchir la liste des films
+            // Rafraîchir la liste des catégories
             await this.getCategories();
 
             const Toast = Swal.mixin({

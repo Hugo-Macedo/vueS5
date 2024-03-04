@@ -1,7 +1,7 @@
 <script>
-export default {
-    props: ['actor']
-}
+   export default {
+      props: ['actor']
+   }
 </script>
 <template>
    <div class="ActorCard">

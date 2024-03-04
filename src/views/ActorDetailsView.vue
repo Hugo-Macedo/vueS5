@@ -17,7 +17,6 @@ import MovieCard from '../components/MovieCard.vue'
             MovieCard
         },
         created() {
-            // Recover the id of the movie
             const actorId = this.$route.params.id
             this.getInfosOfTheActor(actorId)
         },
