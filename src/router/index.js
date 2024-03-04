@@ -8,6 +8,7 @@ import ProfilView from '../views/ProfilView.vue'
 import MovieDetailsView from '../views/MovieDetailsView.vue'
 import ActorDetailsView from '../views/ActorDetailsView.vue'
 import AddMovieView from '../views/AddMovieView.vue'
+import AddActorView from '../views/AddActorView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +62,11 @@ const router = createRouter({
       path: '/movies/add',
       name: 'addmovie',
       component: AddMovieView
+    },
+    {
+      path: '/actorss/add',
+      name: 'addactor',
+      component: AddActorView
     }
   ]
 })

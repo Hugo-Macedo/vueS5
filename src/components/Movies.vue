@@ -160,7 +160,7 @@ export default {
       if(this.searchMovieTitle.length) {
         try {
           // reset la pagination par defaut
-          this.pageForGetMoviesRequest = "/movies&page=1"
+          this.pageForGetMoviesRequest = "/movies?page=1"
 
           const token = localStorage.getItem('token'); // Récupérer le token d'authentification
           if (!token) {
@@ -179,13 +179,15 @@ export default {
           // Réinitialiser editedMovieTitle après la mise à jour
           this.editedMovieTitle = '';
           
-          // relance l'\affichage des movies
-          this.getMovies()
+         
           // Réinitialiser la sélection du film après modification
           this.selectedMovieId = null;
         } catch (error) {
           console.error('Erreur lors de la mise à jour du titre du film :', error);
         }
+      } else {
+         // relance l'\affichage des movies
+         this.getMovies()
       }
     },
     async updateMovieTitle() {
