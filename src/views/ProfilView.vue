@@ -149,7 +149,7 @@ export default {
                 localStorage.setItem('token', newToken)
 
             } catch (error) {
-                console.error('Erreur lors de la mise à jour de l\'email :', error);
+                console.error(error.response.data.message);
             }
         },
         async updateUserPassword() {
